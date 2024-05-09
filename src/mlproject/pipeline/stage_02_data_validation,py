@@ -1,0 +1,28 @@
+from mlproject.config.configuration import ConfigurationManager
+from mlproject.components.data_validation import DataValiadtion
+from mlproject import logger
+from flask import config
+
+
+STAGE_NAME = "Data validation stage"
+
+class DataValidationTrainingPipeline:
+    def __init__(self):
+        pass
+
+    def main(self):
+        config = ConfigurationManager()
+        data_validation_config = config.get_data_validation_config()
+        data_validation = DataValiadtion(config=data_validation_config)
+        data_validation.validate_all_columns()
+
+
+if __name__ == "__main__":
+    try:
+      logger.info(f"Starting {STAGE_NAME}")
+      obj = DataValidationTrainingPipeline()
+      obj.main()
+      logger.info(f"Finished {STAGE_NAME} completed")
+    except Exception as e:
+        logger.exception(e)
+        raise e
